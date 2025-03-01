@@ -1,0 +1,264 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 7%;
+    --foreground: 210 40% 98%;
+
+    --card: 0 0% 10%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 26 100% 56%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 214 20% 20%;
+    --muted-foreground: 215.4 16.3% 76.9%;
+
+    --accent: 180 100% 50%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 25.4%;
+    --input: 214.3 31.8% 30.4%;
+    --ring: 222.2 84% 30.9%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 12%;
+    --sidebar-foreground: 240 5.3% 76.1%;
+    --sidebar-primary: 240 5.9% 30%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 20.9%;
+    --sidebar-accent-foreground: 240 5.9% 90%;
+    --sidebar-border: 220 13% 25%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* Refined cursor size */
+    --cursor-size: 12px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    cursor: none !important; /* Hide default cursor for custom cursor effect */
+  }
+  
+  a, button, .interactive, input[type="submit"] {
+    cursor: none !important;
+  }
+  
+  /* Enhanced custom cursor styles */
+  .custom-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: opacity 0.3s ease;
+  }
+  
+  .cursor-dot {
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    background-color: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out, background-color 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    animation: cursor-pulse 2s infinite;
+  }
+  
+  .cursor-outline {
+    width: calc(var(--cursor-size) * 4);
+    height: calc(var(--cursor-size) * 4);
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, transform 0.15s ease, background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .cursor-trail {
+    width: calc(var(--cursor-size) * 1.5);
+    height: calc(var(--cursor-size) * 1.5);
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Enhanced cursor hover effects */
+  a:hover ~ .cursor-outline,
+  button:hover ~ .cursor-outline,
+  .interactive:hover ~ .cursor-outline,
+  input[type="submit"]:hover ~ .cursor-outline,
+  .neon-button-orange:hover ~ .cursor-outline,
+  .neon-button-blue:hover ~ .cursor-outline,
+  .neon-button-green:hover ~ .cursor-outline {
+    width: calc(var(--cursor-size) * 6);
+    height: calc(var(--cursor-size) * 6);
+    background-color: rgba(255, 95, 31, 0.15);
+    border-color: rgba(255, 95, 31, 0.8);
+    animation: pulse-glow 1.5s infinite;
+  }
+  
+  a:hover ~ .cursor-dot,
+  button:hover ~ .cursor-dot,
+  .interactive:hover ~ .cursor-dot,
+  input[type="submit"]:hover ~ .cursor-dot,
+  .neon-button-orange:hover ~ .cursor-dot,
+  .neon-button-blue:hover ~ .cursor-dot,
+  .neon-button-green:hover ~ .cursor-dot {
+    background-color: rgba(255, 95, 31, 1);
+    transform: translate(-50%, -50%) scale(1.5);
+    box-shadow: 0 0 20px rgba(255, 95, 31, 0.8);
+  }
+
+  /* Add animation for cursor pulse */
+  @keyframes cursor-pulse {
+    0%, 100% {
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+    }
+  }
+  
+  /* Smooth shimmer text animation for "Transforming Industries" */
+  .shimmer-text {
+    background-size: 300% 100% !important;
+    animation: text-shimmer 6s linear infinite !important;
+    transition: background-position 0.5s ease-in-out !important;
+  }
+  
+  @keyframes text-shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+}
+
+@layer components {
+  .text-stroke {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+
+  .neon-button {
+    @apply relative inline-flex items-center justify-center overflow-hidden font-medium transition-all border rounded-md;
+  }
+
+  .neon-button-orange {
+    @apply neon-button border-neon-orange text-neon-orange hover:bg-neon-orange hover:text-black;
+  }
+
+  .neon-button-orange::before {
+    @apply content-[''] absolute top-0 left-0 w-full h-full bg-neon-orange scale-x-0 transition-transform duration-300 origin-right;
+  }
+
+  .neon-button-orange:hover::before {
+    @apply scale-x-100 origin-left;
+  }
+
+  .neon-button-blue {
+    @apply neon-button border-neon-blue text-neon-blue hover:bg-neon-blue hover:text-black;
+  }
+
+  .neon-button-blue::before {
+    @apply content-[''] absolute top-0 left-0 w-full h-full bg-neon-blue scale-x-0 transition-transform duration-300 origin-right;
+  }
+
+  .neon-button-blue:hover::before {
+    @apply scale-x-100 origin-left;
+  }
+
+  .neon-button-green {
+    @apply neon-button border-neon-green text-neon-green hover:bg-neon-green hover:text-black;
+  }
+
+  .neon-button-green::before {
+    @apply content-[''] absolute top-0 left-0 w-full h-full bg-neon-green scale-x-0 transition-transform duration-300 origin-right;
+  }
+
+  .neon-button-green:hover::before {
+    @apply scale-x-100 origin-left;
+  }
+
+  .neon-button span {
+    @apply relative z-10;
+  }
+
+  .glass-card {
+    @apply backdrop-blur-md bg-white/5 border border-white/10 shadow-glass;
+  }
+
+  .shimmer-text {
+    @apply bg-shimmer bg-300% bg-clip-text text-transparent animate-text-shimmer;
+  }
+
+  .grid-bg {
+    @apply bg-grid-pattern bg-[length:20px_20px];
+  }
+
+  .h-screen-minus-nav {
+    height: calc(100vh - 5rem);
+  }
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-500 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Custom page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 400ms, transform 400ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
