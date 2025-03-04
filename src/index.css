@@ -57,6 +57,11 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     cursor: none !important;
   }
+
+  /* --- ADDED: Class to control body overflow --- */
+  body.overflow-hidden {
+    overflow: hidden;
+  }
   
   a, button, .interactive, input[type="submit"] {
     cursor: none !important;
@@ -293,7 +298,7 @@
   }
   
   .shadow-glass {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   }
   
   .shadow-neon-orange {

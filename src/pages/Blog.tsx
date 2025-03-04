@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const BlogCard = ({ title, date, excerpt, imageUrl, category }: { 

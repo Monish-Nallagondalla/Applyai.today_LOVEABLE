@@ -1,5 +1,4 @@
-
-import { Toaster } from "@/components/ui/toaster";
+{`import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -18,11 +17,10 @@ import CustomCursor from "./components/CustomCursor";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import CookiePolicy from "./pages/CookiePolicy";
+import { useIsMobile } from "./hooks/use-mobile"; // Import
 
 const queryClient = new QueryClient();
 
-// ScrollToTop component to ensure page starts at the top when navigating
-// Also handles fixed navbar on scroll
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
@@ -31,7 +29,6 @@ const ScrollToTop = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  // Handle navbar fixed positioning on scroll
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
@@ -44,15 +41,14 @@ const ScrollToTop = () => {
       }
     };
 
-    // Handle mobile viewport height
     const setMobileHeight = () => {
       const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      document.documentElement.style.setProperty('--vh', \`\${vh}px\`);
     };
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', setMobileHeight);
-    setMobileHeight(); // Initial call
+    setMobileHeight();
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -63,35 +59,40 @@ const ScrollToTop = () => {
   return null;
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <div className="flex flex-col min-h-screen min-h-[calc(var(--vh,1vh)*100)]">
-          <CustomCursor />
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-of-service" element={<TermsOfService />} />
-              <Route path="/cookie-policy" element={<CookiePolicy />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+    const isMobile = useIsMobile(); // Use the hook
+    return (
+    <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+            <ScrollToTop />
+            <div className="flex flex-col min-h-screen min-h-[calc(var(--vh,1vh)*100)]">
+            {/* Conditionally render CustomCursor */}
+            {!isMobile && <CustomCursor />}
+            <Navbar />
+            <main className="flex-grow">
+                <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/cookie-policy" element={<CookiePolicy />} />
+                <Route path="*" element={<NotFound />} />
+                </Routes>
+            </main>
+            <Footer />
+            </div>
+        </BrowserRouter>
+        </TooltipProvider>
+    </QueryClientProvider>
+    );
+}
 
 export default App;
+`}

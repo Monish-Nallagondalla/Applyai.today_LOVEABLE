@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Award, Building, Clock, Users, CheckCircle, Sparkles } from 'lucide-react';

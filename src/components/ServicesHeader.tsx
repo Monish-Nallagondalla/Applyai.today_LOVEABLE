@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
