@@ -4,11 +4,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Services from "./pages/Services";
-import Team from "./pages/Team";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import Projects from "./pages/Projects";
@@ -23,12 +22,43 @@ import CookiePolicy from "./pages/CookiePolicy";
 const queryClient = new QueryClient();
 
 // ScrollToTop component to ensure page starts at the top when navigating
+// Also handles fixed navbar on scroll
 const ScrollToTop = () => {
   const { pathname } = useLocation();
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  // Handle navbar fixed positioning on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      if (scrollPosition > 50) {
+        setScrolled(true);
+        document.querySelector('nav')?.classList.add('fixed-nav');
+      } else {
+        setScrolled(false);
+        document.querySelector('nav')?.classList.remove('fixed-nav');
+      }
+    };
+
+    // Handle mobile viewport height
+    const setMobileHeight = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', setMobileHeight);
+    setMobileHeight(); // Initial call
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', setMobileHeight);
+    };
+  }, []);
 
   return null;
 };
@@ -40,7 +70,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen min-h-[calc(var(--vh,1vh)*100)]">
           <CustomCursor />
           <Navbar />
           <main className="flex-grow">
@@ -48,7 +78,6 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
-              <Route path="/team" element={<Team />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/projects" element={<Projects />} />

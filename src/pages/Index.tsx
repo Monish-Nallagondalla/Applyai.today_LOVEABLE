@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Check, ChevronRight, MessageSquare, Star, Users } from "lucide-react";
@@ -19,6 +18,46 @@ const Index = () => {
   const servicesRef = useRef<HTMLDivElement>(null);
   const testimonialsRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  
+  const [magneticPosition, setMagneticPosition] = useState({ x: 0, y: 0 });
+  const [magneticPosition2, setMagneticPosition2] = useState({ x: 0, y: 0 });
+  const [magneticPosition3, setMagneticPosition3] = useState({ x: 0, y: 0 });
+  
+  const clientBlockRefs = [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null)
+  ];
+  
+  const [clientBlockPositions, setClientBlockPositions] = useState([
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 }
+  ]);
+  
+  const serviceCardRefs = [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null)
+  ];
+  
+  const [serviceCardPositions, setServiceCardPositions] = useState([
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 }
+  ]);
+  
+  const ctaButtonRef1 = useRef<HTMLAnchorElement>(null);
+  const ctaButtonRef2 = useRef<HTMLAnchorElement>(null);
+  const servicesButtonRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const observerOptions = {
@@ -56,7 +95,6 @@ const Index = () => {
     };
   }, []);
 
-  // Autoplay for testimonials
   useEffect(() => {
     if (!autoplay) return;
     
@@ -67,10 +105,101 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [autoplay]);
 
-  // Refined client logos with recognizable tech brands
+  const handleMagneticMouseMove = (
+    e: React.MouseEvent,
+    buttonRef: React.RefObject<HTMLAnchorElement>,
+    setMagneticPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>
+  ) => {
+    if (!buttonRef.current) return;
+    
+    const rect = buttonRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    const distanceX = e.clientX - centerX;
+    const distanceY = e.clientY - centerY;
+    
+    const strength = 15;
+    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+    const maxDistance = rect.width / 2;
+    
+    if (distance < maxDistance) {
+      const x = (distanceX / maxDistance) * strength;
+      const y = (distanceY / maxDistance) * strength;
+      setMagneticPosition({ x, y });
+    } else {
+      setMagneticPosition({ x: 0, y: 0 });
+    }
+  };
+
+  const handleMouseLeave = (
+    setMagneticPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>
+  ) => {
+    setMagneticPosition({ x: 0, y: 0 });
+  };
+
+  const handleClientBlockMouseMove = (e: React.MouseEvent, index: number) => {
+    if (!clientBlockRefs[index].current) return;
+    
+    const rect = clientBlockRefs[index].current!.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    const distanceX = e.clientX - centerX;
+    const distanceY = e.clientY - centerY;
+    
+    const strength = 10;
+    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+    const maxDistance = rect.width / 2;
+    
+    if (distance < maxDistance) {
+      const x = (distanceX / maxDistance) * strength;
+      const y = (distanceY / maxDistance) * strength;
+      
+      const newPositions = [...clientBlockPositions];
+      newPositions[index] = { x, y };
+      setClientBlockPositions(newPositions);
+    }
+  };
+  
+  const handleClientBlockMouseLeave = (index: number) => {
+    const newPositions = [...clientBlockPositions];
+    newPositions[index] = { x: 0, y: 0 };
+    setClientBlockPositions(newPositions);
+  };
+  
+  const handleServiceCardMouseMove = (e: React.MouseEvent, index: number) => {
+    if (!serviceCardRefs[index].current) return;
+    
+    const rect = serviceCardRefs[index].current!.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    const distanceX = e.clientX - centerX;
+    const distanceY = e.clientY - centerY;
+    
+    const strength = 12;
+    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+    const maxDistance = rect.width / 2;
+    
+    if (distance < maxDistance) {
+      const x = (distanceX / maxDistance) * strength;
+      const y = (distanceY / maxDistance) * strength;
+      
+      const newPositions = [...serviceCardPositions];
+      newPositions[index] = { x, y };
+      setServiceCardPositions(newPositions);
+    }
+  };
+  
+  const handleServiceCardMouseLeave = (index: number) => {
+    const newPositions = [...serviceCardPositions];
+    newPositions[index] = { x: 0, y: 0 };
+    setServiceCardPositions(newPositions);
+  };
+
   const clients = ["Tesla", "Amazon", "Google", "Microsoft", "Airbnb", "Uber"];
   
-  // Enhanced featured services with more precise descriptions
   const featuredServices = [
     {
       title: "AI Consultation & Strategy",
@@ -98,7 +227,6 @@ const Index = () => {
     }
   ];
 
-  // Enhanced testimonials without images for a cleaner look
   const testimonials = [
     {
       quote: "ApplyAi.today's solutions reduced our response times by 60% while increasing customer satisfaction from 3.8 to 4.7 out of 5. The ROI was visible within the first quarter, transforming how we approach customer service.",
@@ -122,15 +250,17 @@ const Index = () => {
 
   return (
     <>
-      {/* Hero Section */}
       <Hero />
       
-      {/* Trusted By Section */}
       <section 
         ref={clientsRef}
-        className="py-20 bg-gradient-to-b from-black to-gray-900"
+        className="py-20 relative overflow-hidden"
       >
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-black opacity-100"></div>
+        <div className="absolute inset-0 bg-grid-pattern bg-[length:30px_30px] opacity-40"></div>
+        <div className="absolute inset-0 bg-gradient-radial from-black/70 via-black/90 to-black opacity-95"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div 
             className={`text-center mb-12 transition-all duration-700 ${isVisible.clients ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           >
@@ -144,9 +274,17 @@ const Index = () => {
           >
             {clients.map((client, index) => (
               <div 
-                key={index} 
-                className="glass-card px-6 py-4 rounded-lg flex items-center justify-center w-full h-20 hover:border-white/20 transition-all duration-300 hover:shadow-lg group"
-                style={{ transitionDelay: `${200 + (index * 100)}ms` }}
+                key={index}
+                ref={clientBlockRefs[index]}
+                className="glass-card px-6 py-4 rounded-lg flex items-center justify-center w-full h-20 hover:border-white/20 transition-all duration-300 hover:shadow-lg group magnetic-client-block"
+                style={{ 
+                  transitionDelay: `${200 + (index * 100)}ms`,
+                  transform: `translate(${clientBlockPositions[index].x}px, ${clientBlockPositions[index].y}px)`,
+                  transition: 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease, border-color 0.3s ease',
+                  boxShadow: clientBlockPositions[index].x !== 0 || clientBlockPositions[index].y !== 0 ? '0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 255, 255, 0.2)' : ''
+                }}
+                onMouseMove={(e) => handleClientBlockMouseMove(e, index)}
+                onMouseLeave={() => handleClientBlockMouseLeave(index)}
               >
                 <span className="text-xl font-semibold text-gray-300 group-hover:text-white transition-colors duration-300">{client}</span>
               </div>
@@ -155,12 +293,15 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Services Section - Enhanced with more compelling content */}
       <section 
         ref={servicesRef}
-        className="py-24 bg-gradient-to-b from-gray-900 to-black"
+        className="py-24 relative overflow-hidden"
       >
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-black opacity-100"></div>
+        <div className="absolute inset-0 bg-grid-pattern bg-[length:30px_30px] opacity-40"></div>
+        <div className="absolute inset-0 bg-gradient-radial from-black/70 via-black/90 to-black opacity-95"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div 
             className={`max-w-3xl mx-auto text-center mb-16 transition-all duration-700 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           >
@@ -176,9 +317,19 @@ const Index = () => {
           >
             {featuredServices.map((service, index) => (
               <div 
-                key={index} 
-                className={`glass-card p-8 rounded-xl hover:border-neon-${service.color}/30 transition-all duration-300 hover:translate-y-[-5px] flex flex-col h-full group`}
-                style={{ transitionDelay: `${200 + (index * 100)}ms` }}
+                key={index}
+                ref={serviceCardRefs[index]}
+                className={`glass-card p-8 rounded-xl hover:border-neon-${service.color}/30 transition-all duration-300 hover:translate-y-[-5px] flex flex-col h-full group magnetic-button-enhanced`}
+                style={{ 
+                  transitionDelay: `${200 + (index * 100)}ms`,
+                  transform: `translate(${serviceCardPositions[index].x}px, ${serviceCardPositions[index].y}px)`,
+                  transition: 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.3s ease, box-shadow 0.3s ease',
+                  boxShadow: serviceCardPositions[index].x !== 0 || serviceCardPositions[index].y !== 0 
+                    ? `0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(${service.color === 'orange' ? '255, 95, 31' : service.color === 'blue' ? '0, 255, 255' : '0, 255, 127'}, 0.3)` 
+                    : ''
+                }}
+                onMouseMove={(e) => handleServiceCardMouseMove(e, index)}
+                onMouseLeave={() => handleServiceCardMouseLeave(index)}
               >
                 <div className={`bg-neon-${service.color}/10 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4 group-hover:bg-neon-${service.color}/20 transition-all duration-300`}>
                   {service.icon}
@@ -198,8 +349,18 @@ const Index = () => {
           <div 
             className={`text-center transition-all duration-700 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
             style={{ transitionDelay: "600ms" }}
+            onMouseMove={(e) => handleMagneticMouseMove(e, servicesButtonRef, setMagneticPosition3)}
+            onMouseLeave={() => handleMouseLeave(setMagneticPosition3)}
           >
-            <Link to="/services" className="neon-button-green px-8 py-3">
+            <Link 
+              ref={servicesButtonRef}
+              to="/services" 
+              className="neon-button-green px-8 py-3 magnetic-button-enhanced"
+              style={{ 
+                transform: `translate(${magneticPosition3.x}px, ${magneticPosition3.y}px)`,
+                transition: 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1)'
+              }}
+            >
               <span className="relative z-10 flex items-center justify-center">
                 Explore All Services <ArrowRight className="ml-2 h-4 w-4" />
               </span>
@@ -208,19 +369,13 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Improved Testimonials Section with perfect blending to CTA section */}
       <section 
         ref={testimonialsRef}
-        className="py-24 relative overflow-hidden bg-transparent"
+        className="py-24 relative overflow-hidden"
       >
-        {/* Enhanced gradient overlays for perfect blending */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/70 to-gray-900/50 opacity-100"></div>
-        <div className="absolute inset-0 bg-grid-pattern bg-[length:20px_20px] opacity-10"></div>
-        
-        {/* Enhanced floating orbs that follow cursor */}
-        <div className="absolute top-20 right-[20%] w-80 h-80 rounded-full bg-neon-blue/5 blur-3xl animate-float"></div>
-        <div className="absolute bottom-40 left-[30%] w-96 h-96 rounded-full bg-neon-orange/5 blur-3xl animate-float" style={{ animationDelay: "-3s" }}></div>
-        <div className="absolute top-1/3 left-[15%] w-64 h-64 rounded-full bg-neon-green/5 blur-3xl animate-float" style={{ animationDelay: "-1.5s" }}></div>
+        <div className="absolute inset-0 bg-black opacity-100"></div>
+        <div className="absolute inset-0 bg-grid-pattern bg-[length:30px_30px] opacity-40"></div>
+        <div className="absolute inset-0 bg-gradient-radial from-black/70 via-black/90 to-black opacity-95"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div 
@@ -232,7 +387,6 @@ const Index = () => {
             </p>
           </div>
           
-          {/* Redesigned Testimonial Carousel with no images and compact design */}
           <div 
             className={`max-w-2xl mx-auto transition-all duration-700 ${isVisible.testimonials ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
             style={{ transitionDelay: "200ms" }}
@@ -240,8 +394,7 @@ const Index = () => {
             onMouseLeave={() => setAutoplay(true)}
           >
             <div className="relative">
-              {/* Testimonial Slides */}
-              <div className="relative overflow-hidden glass-card rounded-xl border border-white/10 backdrop-blur-md">
+              <div className="relative overflow-hidden glass-card rounded-xl border border-white/10 backdrop-blur-md cta-glow">
                 {testimonials.map((testimonial, index) => (
                   <div 
                     key={index}
@@ -251,7 +404,6 @@ const Index = () => {
                         : 'opacity-0 translate-x-full absolute inset-0'
                     }`}
                   >
-                    {/* Testimonial Content with improved typography */}
                     <div className="flex mb-3 justify-center">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <Star key={i} className="h-4 w-4 text-neon-orange fill-neon-orange" />
@@ -266,7 +418,6 @@ const Index = () => {
                 ))}
               </div>
               
-              {/* Enhanced Navigation Dots */}
               <div className="flex justify-center mt-4 space-x-2">
                 {testimonials.map((_, index) => (
                   <button
@@ -282,7 +433,6 @@ const Index = () => {
                 ))}
               </div>
               
-              {/* Previous/Next Buttons with enhanced styling */}
               <button
                 className="absolute top-1/2 left-2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300 shadow-lg"
                 onClick={() => setActiveTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
@@ -306,37 +456,60 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Call To Action Section - Perfect blending with testimonials */}
       <section 
         ref={ctaRef}
         className="py-24 relative overflow-hidden"
       >
-        {/* Background Elements for seamless blending */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 via-gray-900/80 to-black opacity-100"></div>
-        <div className="absolute inset-0 bg-grid-pattern bg-[length:20px_20px] opacity-10"></div>
-        <div className="absolute inset-0 opacity-20 overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-glow-conic filter blur-3xl opacity-20 animate-gradient-x"></div>
-        </div>
+        <div className="absolute inset-0 bg-black opacity-100"></div>
+        <div className="absolute inset-0 bg-grid-pattern bg-[length:30px_30px] opacity-40"></div>
+        <div className="absolute inset-0 bg-gradient-radial from-black/70 via-black/90 to-black opacity-95"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div 
-            className={`max-w-4xl mx-auto glass-card p-10 md:p-16 rounded-2xl text-center border border-white/10 backdrop-blur-md shadow-xl transition-all duration-700 ${isVisible.callToAction ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+            className={`max-w-4xl mx-auto glass-card p-10 md:p-16 rounded-2xl text-center border border-white/10 backdrop-blur-md cta-glow transition-all duration-700 ${isVisible.callToAction ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Transform Your Business with AI?</h2>
             <p className="text-gray-300 text-lg mb-10 max-w-2xl mx-auto">
               Partner with ApplyAi.today and discover how our cutting-edge AI solutions can drive innovation, efficiency, and growth for your organization. Our team of experts is ready to help you navigate the AI landscape.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
-              <Link to="/contact" className="neon-button-orange px-8 py-3 shadow-neon-orange">
-                <span className="relative z-10 flex items-center justify-center">
-                  Schedule a Consultation <ArrowRight className="ml-2 h-4 w-4" />
-                </span>
-              </Link>
-              <Link to="/services" className="neon-button-blue px-8 py-3 shadow-neon-blue">
-                <span className="relative z-10 flex items-center justify-center">
-                  Explore Our Solutions
-                </span>
-              </Link>
+              <div 
+                onMouseMove={(e) => handleMagneticMouseMove(e, ctaButtonRef1, setMagneticPosition)}
+                onMouseLeave={() => handleMouseLeave(setMagneticPosition)}
+              >
+                <Link 
+                  ref={ctaButtonRef1}
+                  to="/contact" 
+                  className="neon-button-orange px-8 py-4 shadow-neon-orange magnetic-button-enhanced w-full sm:w-auto"
+                  style={{ 
+                    transform: `translate(${magneticPosition.x}px, ${magneticPosition.y}px)`,
+                    transition: 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1)'
+                  }}
+                >
+                  <span className="relative z-10 flex items-center justify-center">
+                    Schedule a Consultation <ArrowRight className="ml-2 h-4 w-4" />
+                  </span>
+                </Link>
+              </div>
+              
+              <div 
+                onMouseMove={(e) => handleMagneticMouseMove(e, ctaButtonRef2, setMagneticPosition2)}
+                onMouseLeave={() => handleMouseLeave(setMagneticPosition2)}
+              >
+                <Link 
+                  ref={ctaButtonRef2}
+                  to="/services" 
+                  className="neon-button-blue px-8 py-4 shadow-neon-blue magnetic-button-enhanced w-full sm:w-auto"
+                  style={{ 
+                    transform: `translate(${magneticPosition2.x}px, ${magneticPosition2.y}px)`,
+                    transition: 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1)'
+                  }}
+                >
+                  <span className="relative z-10 flex items-center justify-center">
+                    Explore Our Solutions
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

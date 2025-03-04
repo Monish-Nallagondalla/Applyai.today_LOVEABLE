@@ -6,8 +6,12 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-black border-t border-gray-800 pt-16 pb-8">
-      <div className="container mx-auto px-4 md:px-6">
+    <footer className="bg-black relative overflow-hidden pt-16 pb-8">
+      {/* Consistent background elements */}
+      <div className="absolute inset-0 bg-grid-pattern bg-[length:30px_30px] opacity-40"></div>
+      <div className="absolute inset-0 bg-gradient-radial from-black/70 via-black/90 to-black opacity-95"></div>
+      
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Company Info */}
           <div>
@@ -19,7 +23,7 @@ const Footer = () => {
               </h2>
             </Link>
             <p className="text-gray-400 mb-6">
-              Empowering businesses with cutting-edge AI solutions to drive innovation and growth.
+              Empowering businesses with cutting-edge AI solutions to drive innovation and growth. Apply AI, Amplify Results.Today
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-neon-orange transition-colors" aria-label="Facebook">
@@ -48,9 +52,6 @@ const Footer = () => {
                 <Link to="/about" className="text-gray-400 hover:text-neon-blue transition-colors">About Us</Link>
               </li>
               <li>
-                <Link to="/team" className="text-gray-400 hover:text-neon-blue transition-colors">Our Team</Link>
-              </li>
-              <li>
                 <Link to="/blog" className="text-gray-400 hover:text-neon-blue transition-colors">Blog</Link>
               </li>
               <li>
@@ -59,21 +60,21 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Services - Updated to match our service categories */}
           <div>
             <h3 className="text-white text-lg font-semibold mb-6">Services</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/services" className="text-gray-400 hover:text-neon-blue transition-colors">AI Consultation</Link>
+                <Link to="/services" className="text-gray-400 hover:text-neon-blue transition-colors">AI Strategy & Advisory</Link>
               </li>
               <li>
-                <Link to="/services" className="text-gray-400 hover:text-neon-blue transition-colors">AI Integration</Link>
+                <Link to="/services" className="text-gray-400 hover:text-neon-blue transition-colors">AI Development & Implementation</Link>
               </li>
               <li>
-                <Link to="/services" className="text-gray-400 hover:text-neon-blue transition-colors">Agent Development</Link>
+                <Link to="/services" className="text-gray-400 hover:text-neon-blue transition-colors">AI Operations & Integration</Link>
               </li>
               <li>
-                <Link to="/services" className="text-gray-400 hover:text-neon-blue transition-colors">Business Intelligence</Link>
+                <Link to="/services" className="text-gray-400 hover:text-neon-blue transition-colors">AI-Powered Business Solutions</Link>
               </li>
               <li>
                 <Link to="/services" className="text-gray-400 hover:text-neon-blue transition-colors">View All Services</Link>
@@ -81,17 +82,17 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact Info - Updated with Bangalore-specific information */}
           <div>
             <h3 className="text-white text-lg font-semibold mb-6">Contact Us</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-neon-orange mr-3 mt-0.5" />
-                <span className="text-gray-400">123 AI Street, Tech Valley, CA 94103, USA</span>
+                <span className="text-gray-400">42, Whitefield Main Road, EPIP Zone, Whitefield, Bangalore, Karnataka 560066, India</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-neon-blue mr-3" />
-                <span className="text-gray-400">+1 (555) 123-4567</span>
+                <span className="text-gray-400">+91 80-4123-4567</span>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-neon-green mr-3" />

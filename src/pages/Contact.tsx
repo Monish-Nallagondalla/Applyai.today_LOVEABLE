@@ -12,7 +12,7 @@ const Contact = () => {
           <div className="glass-card p-8 rounded-xl">
             <h2 className="text-2xl font-semibold mb-6">Get in Touch</h2>
             <p className="text-gray-300 mb-8">
-              Have a question or want to discuss a project? We'd love to hear from you.
+              Have a question about how we can transform your business with AI? We're here to help.
               Fill out the form and our team will get back to you shortly.
             </p>
             
@@ -25,7 +25,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-medium">Phone</h3>
-                  <p className="text-gray-400">+1 (555) 123-4567</p>
+                  <p className="text-gray-400">+91 80-4123-4567</p>
                 </div>
               </div>
               
@@ -37,7 +37,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-medium">Email</h3>
-                  <p className="text-gray-400">info@aiagency.com</p>
+                  <p className="text-gray-400">info@applyai.today</p>
                 </div>
               </div>
               
@@ -50,7 +50,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-medium">Address</h3>
-                  <p className="text-gray-400">123 AI Street, Tech City, CA 94103</p>
+                  <p className="text-gray-400">42, Whitefield Main Road, EPIP Zone, Whitefield, Bangalore, Karnataka 560066, India</p>
                 </div>
               </div>
             </div>

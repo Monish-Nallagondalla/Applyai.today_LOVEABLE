@@ -14,6 +14,7 @@ const ContactForm = () => {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -45,6 +46,26 @@ const ContactForm = () => {
     });
     
     setIsSubmitting(false);
+  };
+
+  // Magnetic button effect
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const button = e.currentTarget;
+    const rect = button.getBoundingClientRect();
+    
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    
+    // Create a magnetic pull effect (max 15px movement)
+    const strength = 15;
+    const magneticX = (x / rect.width) * strength * 2;
+    const magneticY = (y / rect.height) * strength * 2;
+    
+    setButtonPosition({ x: magneticX, y: magneticY });
+  };
+
+  const handleMouseLeave = () => {
+    setButtonPosition({ x: 0, y: 0 });
   };
 
   return (
@@ -94,7 +115,7 @@ const ContactForm = () => {
             id="phone"
             name="phone"
             className="w-full px-4 py-3 bg-white/5 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-neon-blue/50 text-white"
-            placeholder="+1 (123) 456-7890"
+            placeholder="+91 9876543210"
             value={formData.phone}
             onChange={handleChange}
           />
@@ -117,7 +138,7 @@ const ContactForm = () => {
         </div>
       </div>
       
-      {/* Service */}
+      {/* Service - Fixed the background color */}
       <div className="mb-6">
         <label htmlFor="service" className="block text-sm font-medium text-gray-300 mb-2">
           Interested Service <span className="text-neon-orange">*</span>
@@ -130,14 +151,14 @@ const ContactForm = () => {
           value={formData.service}
           onChange={handleChange}
         >
-          <option value="" disabled>Select a service</option>
-          <option value="AI Consultation">AI Consultation & Strategy</option>
-          <option value="AI Integration">AI Technology Integration</option>
-          <option value="AI Development">AI Agent Development</option>
-          <option value="AI Automation">AI-Powered Automation</option>
-          <option value="Predictive Analytics">Predictive Analytics</option>
-          <option value="Business Intelligence">Business Intelligence</option>
-          <option value="Other">Other</option>
+          <option value="" disabled className="bg-background text-white">Select a service</option>
+          <option value="AI Consultation" className="bg-background text-white">AI Consultation & Strategy</option>
+          <option value="AI Integration" className="bg-background text-white">AI Technology Integration</option>
+          <option value="AI Development" className="bg-background text-white">AI Agent Development</option>
+          <option value="AI Automation" className="bg-background text-white">AI-Powered Automation</option>
+          <option value="Predictive Analytics" className="bg-background text-white">Predictive Analytics</option>
+          <option value="Business Intelligence" className="bg-background text-white">Business Intelligence</option>
+          <option value="Other" className="bg-background text-white">Other</option>
         </select>
       </div>
       
@@ -158,11 +179,17 @@ const ContactForm = () => {
         ></textarea>
       </div>
       
-      {/* Submit Button */}
+      {/* Submit Button with Magnetic Effect */}
       <button
         type="submit"
         disabled={isSubmitting}
-        className={`neon-button-blue w-full flex items-center justify-center ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+        className={`neon-button-blue w-full flex items-center justify-center ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''} magnetic-button`}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ 
+          transform: `translate(${buttonPosition.x}px, ${buttonPosition.y}px)`,
+          transition: isSubmitting ? 'none' : 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1)'
+        }}
       >
         <span className="relative z-10 flex items-center justify-center">
           {isSubmitting ? (
