@@ -15,16 +15,16 @@ const ServiceItem = ({ service, index }: ServiceItemProps) => {
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!itemRef.current) return;
-    
+
     const rect = itemRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    
+
     // Enhanced magnetic pull effect
     const strength = 20; // Increased from 15
     const magneticX = (x / rect.width) * strength;
     const magneticY = (y / rect.height) * strength;
-    
+
     setMagneticPosition({ x: magneticX, y: magneticY });
   };
 
@@ -34,10 +34,10 @@ const ServiceItem = ({ service, index }: ServiceItemProps) => {
   };
 
   return (
-    <div 
+    <div
       ref={itemRef}
-      className="glass-card rounded-xl overflow-hidden flex flex-col h-full shadow-lg border border-white/10 hover:border-white/20 transition-all duration-300 magnetic-button-enhanced"
-      style={{ 
+      className={`glass-card rounded-xl overflow-hidden flex flex-col h-full shadow-lg border border-white/10 hover:border-white/20 transition-all duration-300 magnetic-button-enhanced ${index === 0 ? 'bg-black/50' : ''}`}
+      style={{
         transform: isHovered ? `translate3d(${magneticPosition.x}px, ${magneticPosition.y}px, 0)` : 'translate3d(0, 0, 0)',
         transition: 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1)',
         boxShadow: isHovered ? `0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(${service.color === 'orange' ? '255, 95, 31' : service.color === 'blue' ? '0, 255, 255' : '0, 255, 127'}, 0.35)` : ''
